@@ -47,6 +47,7 @@
 #include "hal_types.h"
 #include "hal_board.h"
 #include "npi.h"
+#include "stdio.h"
 
 /*******************************************************************************
  * MACROS
@@ -158,6 +159,39 @@ uint16 NPI_ReadTransport( uint8 *buf, uint16 len )
 uint16 NPI_WriteTransport( uint8 *buf, uint16 len )
 {
   return( HalUARTWrite( NPI_UART_PORT, buf, len ) );
+}
+/*
+
+*/
+	
+/*******************************************************************************
+ * @fn			NPI_RxBufLen
+ *
+ * @brief		This routine returns the number of bytes in the receive buffer.
+ *
+ * input parameters
+ *
+ * @param		format. max string length is 128 Bytes
+ *                                        
+ * output parameters
+ *
+ * @param		None.
+ *
+ * @return		None.
+ */
+
+void NPI_printf (const char *format, ...)
+{
+	char str_buf[128]={0};	
+	va_list arg;
+	//int done;
+	va_start (arg, format);
+ 	vsprintf (str_buf, format, arg);
+	va_end (arg);
+	
+	NPI_WriteTransport((uint8 *)str_buf, osal_strlen((char*)str_buf));
+
+	return;
 }
 
 
