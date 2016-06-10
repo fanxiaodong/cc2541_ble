@@ -22,7 +22,7 @@
   its documentation for any purpose.
 
   YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE
-  PROVIDED “AS IS” WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
+  PROVIDED “AS IS?WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED,
   INCLUDING WITHOUT LIMITATION, ANY WARRANTY OF MERCHANTABILITY, TITLE,
   NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT SHALL
   TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -57,7 +57,7 @@
 #include "gapbondmgr.h"
 #include "simpleGATTprofile.h"
 #include "simpleBLECentral.h"
-
+#include "npi.h"
 /*********************************************************************
  * MACROS
  */
@@ -157,7 +157,7 @@ enum
 /*********************************************************************
  * EXTERNAL VARIABLES
  */
-
+extern void NPI_printf(const char * format,...);
 /*********************************************************************
  * EXTERNAL FUNCTIONS
  */
@@ -266,7 +266,9 @@ static const gapBondCBs_t simpleBLEBondCB =
 void SimpleBLECentral_Init( uint8 task_id )
 {
   simpleBLETaskId = task_id;
-
+  //init printf
+  NPI_InitTransport(NULL);
+  NPI_printf("SimpleBLECentral_Init\n");
   // Setup Central Profile
   {
     uint8 scanRes = DEFAULT_MAX_SCAN_RES;
@@ -329,7 +331,7 @@ uint16 SimpleBLECentral_ProcessEvent( uint8 task_id, uint16 events )
 {
   
   VOID task_id; // OSAL required parameter that isn't used in this function
-  
+  NPI_printf("Central_ProcessEvent %d 0x%x\n",task_id,events);
   if ( events & SYS_EVENT_MSG )
   {
     uint8 *pMsg;
