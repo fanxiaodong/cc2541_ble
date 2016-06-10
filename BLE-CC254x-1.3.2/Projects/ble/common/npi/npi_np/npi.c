@@ -48,6 +48,7 @@
 #include "hal_board.h"
 #include "npi.h"
 #include "stdio.h"
+#include "string.h"
 
 /*******************************************************************************
  * MACROS
@@ -189,7 +190,7 @@ void NPI_printf (const char *format, ...)
  	vsprintf (str_buf, format, arg);
 	va_end (arg);
 	
-	NPI_WriteTransport((uint8 *)str_buf, osal_strlen((char*)str_buf));
+	NPI_WriteTransport((uint8 *)str_buf, strlen((char*)str_buf));
 
 	return;
 }

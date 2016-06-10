@@ -31,3 +31,5 @@
 # Debug files
 *.dSYM/
 *.su
+BLE-CC254x-1.3.2/Projects/ble/SimpleBLECentral/CC2541/CC2541EM
+BLE-CC254x-1.3.2/Projects/ble/SimpleBLECentral/CC2541/settings
