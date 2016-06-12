@@ -59,7 +59,7 @@
 #include "gattservapp.h"
 #include "devinfoservice.h"
 #include "simpleGATTprofile.h"
-
+#include "npi.h"
 #if defined( CC2540_MINIDK )
   #include "simplekeys.h"
 #endif
@@ -281,9 +281,12 @@ static simpleProfileCBs_t simpleBLEPeripheral_SimpleProfileCBs =
 void SimpleBLEPeripheral_Init( uint8 task_id )
 {
   simpleBLEPeripheral_TaskID = task_id;
+  //init printf
+  NPI_InitTransport(NULL);
+  NPI_printf("SimpleBLEPeripheral_Init\n");
 
   // Setup the GAP
-  VOID GAP_SetParamValue( TGAP_CONN_PAUSE_PERIPHERAL, DEFAULT_CONN_PAUSE_PERIPHERAL );
+  GAP_SetParamValue( TGAP_CONN_PAUSE_PERIPHERAL, DEFAULT_CONN_PAUSE_PERIPHERAL );
   
   // Setup the GAP Peripheral Role Profile
   {
@@ -335,8 +338,8 @@ void SimpleBLEPeripheral_Init( uint8 task_id )
 
   // Setup the GAP Bond Manager
   {
-    uint32 passkey = 0; // passkey "000000"
-    uint8 pairMode = GAPBOND_PAIRING_MODE_WAIT_FOR_REQ;
+    uint32 passkey = 12345; // passkey "000000"
+    uint8 pairMode = GAPBOND_PAIRING_MODE_INITIATE;//GAPBOND_PAIRING_MODE_WAIT_FOR_REQ;
     uint8 mitm = TRUE;
     uint8 ioCap = GAPBOND_IO_CAP_DISPLAY_ONLY;
     uint8 bonding = TRUE;
@@ -451,7 +454,7 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
 {
 
   VOID task_id; // OSAL required parameter that isn't used in this function
-
+  NPI_printf("Peripheral_ProcessEvent 0x%x \n",events);
   if ( events & SYS_EVENT_MSG )
   {
     uint8 *pMsg;
@@ -471,10 +474,10 @@ uint16 SimpleBLEPeripheral_ProcessEvent( uint8 task_id, uint16 events )
   if ( events & SBP_START_DEVICE_EVT )
   {
     // Start the Device
-    VOID GAPRole_StartDevice( &simpleBLEPeripheral_PeripheralCBs );
+     GAPRole_StartDevice( &simpleBLEPeripheral_PeripheralCBs );
 
     // Start Bond Manager
-    VOID GAPBondMgr_Register( &simpleBLEPeripheral_BondMgrCBs );
+     GAPBondMgr_Register( &simpleBLEPeripheral_BondMgrCBs );
 
     // Set timer for first periodic event
     osal_start_timerEx( simpleBLEPeripheral_TaskID, SBP_PERIODIC_EVT, SBP_PERIODIC_EVT_PERIOD );
@@ -732,6 +735,7 @@ static void performPeriodicTask( void )
      */
     SimpleProfile_SetParameter( SIMPLEPROFILE_CHAR4, sizeof(uint8), &valueToCopy);
   }
+   NPI_printf("performPeriodicTask  stat 0x%x  %d\n",stat,valueToCopy);
 }
 
 /*********************************************************************

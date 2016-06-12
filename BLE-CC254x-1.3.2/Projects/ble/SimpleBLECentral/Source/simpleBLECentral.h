@@ -58,6 +58,14 @@ extern "C"
 #define START_DEVICE_EVT                              0x0001
 #define START_DISCOVERY_EVT                           0x0002
 
+
+//UART CMD
+#define CMD_start_discover  1
+#define CMD_stop_discover  2
+#define CMD_stop_discover  2
+
+
+
 /*********************************************************************
  * MACROS
  */

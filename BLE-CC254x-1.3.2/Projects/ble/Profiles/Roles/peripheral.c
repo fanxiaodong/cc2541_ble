@@ -1127,7 +1127,7 @@ static void gapRole_ProcessGAPMsg( gapEventHdr_t *pMsg )
  */
 static void gapRole_SetupGAP( void )
 {
-  VOID GAP_DeviceInit( gapRole_TaskID,
+   GAP_DeviceInit( gapRole_TaskID,
           gapRole_profileRole, 0,
           gapRole_IRK, gapRole_SRK,
           &gapRole_signCounter );

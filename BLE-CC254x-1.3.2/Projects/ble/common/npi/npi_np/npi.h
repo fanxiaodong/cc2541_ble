@@ -116,6 +116,7 @@ extern uint16 NPI_RxBufLen( void );
 extern uint16 NPI_GetMaxRxBufSize( void );
 extern uint16 NPI_GetMaxTxBufSize( void );
 extern void NPI_printf (const char *format, ...);
+extern void printf_arry(char *str,char *arry, uint8 len);
 
 /*******************************************************************************
 */

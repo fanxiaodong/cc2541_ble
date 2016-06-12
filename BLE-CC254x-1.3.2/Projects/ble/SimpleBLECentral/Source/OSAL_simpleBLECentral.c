@@ -75,6 +75,13 @@
 
 /* Application */
 #include "simpleBLECentral.h"
+#include "npi.h"
+
+
+
+extern void simpleBLE_NpiSerialCallback( uint8 port, uint8 events );
+
+
 
 /*********************************************************************
  * GLOBAL VARIABLES
@@ -148,6 +155,9 @@ void osalInitTasks( void )
 
   /* SM Task */
   SM_Init( taskID++ );
+  //init printf
+  NPI_InitTransport(simpleBLE_NpiSerialCallback);
+  NPI_printf("SimpleBLECentral_Init\n");
 
   /* Profiles */
   GAPCentralRole_Init( taskID++ );

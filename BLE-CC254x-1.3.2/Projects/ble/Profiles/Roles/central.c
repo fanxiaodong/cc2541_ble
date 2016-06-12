@@ -50,7 +50,7 @@
 #include "gap.h"
 #include "gapbondmgr.h"
 #include "central.h"
-
+#include "npi.h"
 /*********************************************************************
  * MACROS
  */
@@ -528,6 +528,7 @@ static void gapCentralRole_ProcessOSALMsg( osal_event_hdr_t *pMsg )
  */
 static void gapCentralRole_ProcessGAPMsg( gapEventHdr_t *pMsg )
 {
+	NPI_printf("CProcessGAPMsg 0x%x\n",pMsg->opcode);
   switch ( pMsg->opcode )
   {
     case GAP_DEVICE_INIT_DONE_EVENT:
@@ -537,11 +538,15 @@ static void gapCentralRole_ProcessGAPMsg( gapEventHdr_t *pMsg )
         if ( pPkt->hdr.status == SUCCESS )
         {
           // Save off the generated keys
-          VOID osal_snv_write( BLE_NVID_IRK, KEYLEN, gapCentralRoleIRK );
-          VOID osal_snv_write( BLE_NVID_CSRK, KEYLEN, gapCentralRoleSRK );
+          NPI_printf("Save off the generated keys\n");
+           osal_snv_write( BLE_NVID_IRK, KEYLEN, gapCentralRoleIRK );
+           osal_snv_write( BLE_NVID_CSRK, KEYLEN, gapCentralRoleSRK );
 
           // Save off the information
-          VOID osal_memcpy( gapCentralRoleBdAddr, pPkt->devAddr, B_ADDR_LEN );
+           osal_memcpy( gapCentralRoleBdAddr, pPkt->devAddr, B_ADDR_LEN );
+			printf_arry("gapCentralRoleBdAddr",(char*)gapCentralRoleBdAddr,sizeof(gapCentralRoleBdAddr));
+			printf_arry("gapCentralRoleIRK",(char*)gapCentralRoleIRK,sizeof(gapCentralRoleIRK));
+			printf_arry("gapCentralRoleSRK",(char*)gapCentralRoleSRK,sizeof(gapCentralRoleSRK));
         }
       }
       break;
@@ -553,7 +558,7 @@ static void gapCentralRole_ProcessGAPMsg( gapEventHdr_t *pMsg )
         if (pPkt->hdr.status == SUCCESS)
         {
           // Notify the Bond Manager of the connection
-          VOID GAPBondMgr_LinkEst( pPkt->devAddrType, pPkt->devAddr,
+           GAPBondMgr_LinkEst( pPkt->devAddrType, pPkt->devAddr,
                                    pPkt->connectionHandle, GAP_PROFILE_CENTRAL );
         }
       }

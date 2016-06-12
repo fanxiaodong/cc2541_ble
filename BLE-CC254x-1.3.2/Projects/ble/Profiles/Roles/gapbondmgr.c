@@ -53,7 +53,7 @@
 #include "gattservapp.h"
 #include "gapgattserver.h"
 #include "gapbondmgr.h"
-
+#include "npi.h"
 /*********************************************************************
  * MACROS
  */
@@ -799,7 +799,7 @@ void GAPBondMgr_Register( gapBondCBs_t *pCB )
   pGapBondCB = pCB;
 
   // Take over the processing of Authentication messages
-  VOID GAP_SetParamValue( TGAP_AUTH_TASK_ID, gapBondMgr_TaskID );
+   GAP_SetParamValue( TGAP_AUTH_TASK_ID, gapBondMgr_TaskID );
 
   // Register with GATT Server App for event messages
   GATTServApp_RegisterForMsg( gapBondMgr_TaskID );
@@ -841,6 +841,8 @@ bStatus_t GAPBondMgr_PasscodeRsp( uint16 connectionHandle, uint8 status, uint32 
  */
 void GAPBondMgr_ProcessGAPMsg( gapEventHdr_t *pMsg )
 {
+	NPI_printf("BondMgr_ProcessGAPMsg 0x%x\n",pMsg->opcode);
+
   switch ( pMsg->opcode )
   {
     case GAP_PASSKEY_NEEDED_EVENT:
@@ -1503,7 +1505,17 @@ static void gapBondMgrReadBonds( void )
       VOID osal_memset( bonds[idx].publicAddr, 0xFF, B_ADDR_LEN );
       VOID osal_memset( bonds[idx].reconnectAddr, 0xFF, B_ADDR_LEN );
       bonds[idx].stateFlags = 0;
+     
     }
+     NPI_printf("ReadBonds %d 0x%x\n publicAddr: ",idx,bonds[idx].stateFlags);
+     for(uint8 i = 0 ; i < B_ADDR_LEN;i++){
+     	NPI_printf("0x%x:",bonds[idx].publicAddr[i]);
+     }
+      NPI_printf("\n reconnectAddr: ");
+      for(uint8 i = 0 ; i < B_ADDR_LEN;i++){
+     	NPI_printf("0x%x ",bonds[idx].reconnectAddr[i]);
+     }
+       NPI_printf("\n");
   }
 
   if ( autoSyncWhiteList )
@@ -1862,7 +1874,7 @@ static void gapBondSetupPrivFlag( void )
   }
 
   // Setup the
-  VOID GGS_SetParameter( GGS_PERI_PRIVACY_FLAG_PROPS, sizeof ( uint8 ), &privFlagProp );
+   GGS_SetParameter( GGS_PERI_PRIVACY_FLAG_PROPS, sizeof ( uint8 ), &privFlagProp );
 }
 
 /*********************************************************************

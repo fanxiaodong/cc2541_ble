@@ -1063,6 +1063,12 @@
       <name>$PROJ_DIR$\..\Source\OSAL_simpleBLECentral.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\Source\simpleBLE_cmd.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Source\simpleBLE_cmd.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\Source\simpleBLECentral.c</name>
     </file>
     <file>
@@ -1150,7 +1156,7 @@
             <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_key.c</name>
           </file>
           <file>
-            <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_lcd.c</name>
+            <name>$PROJ_DIR$\..\..\..\..\COMPONENTS\hal\target\CC2540EB\hal_lcd.c</name>
           </file>
           <file>
             <name>$PROJ_DIR$\..\..\..\..\Components\hal\target\CC2540EB\hal_led.c</name>

@@ -194,6 +194,17 @@ void NPI_printf (const char *format, ...)
 
 	return;
 }
+void printf_arry(char *str,char *arry, uint8 len)
+{
+	if(str){
+		NPI_printf("%s:\n",str);
+	}
+	
+	for(uint8 i = 0; i < len; i++){
+		NPI_printf("0x%x ");
+	}
+	NPI_printf("\n");
+}
 
 
 /*******************************************************************************
